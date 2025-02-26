@@ -1,0 +1,7 @@
+services:
+  fiber-webserver:
+    build: .
+    ports:
+      - "13000:13000"
+      - "13100:13100"
+    restart: unless-stopped
