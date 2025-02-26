@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"sync/atomic"
@@ -57,7 +56,8 @@ func main() {
 
 	// Endpoint to handle POST requests
 	app.Post("/data", func(c *fiber.Ctx) error {
-		var input struct {
+		//json input
+		/*var input struct {
 			Username string `json:"username"`
 			Age      string `json:"age"`
 		}
@@ -65,17 +65,30 @@ func main() {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": "Invalid JSON",
 			})
-		}
+		}*/
+		username := c.FormValue("username")
+		age := c.FormValue("age")
 
+		if username == "" || age == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Missing username or age",
+			})
+		}
 		// Increment metrics
 		atomic.AddUint64(&totalRequests, 1)
 		atomic.AddUint64(&lastMinuteRequests, 1)
 		requestCounter.Inc()
 
-		return c.JSON(fiber.Map{
+		//json output
+		/*return c.JSON(fiber.Map{
 			"message": "Data received",
 			"user":    input.Username,
 			"age":     input.Age,
+		})*/
+		return c.JSON(fiber.Map{
+			"message": "Data received",
+			"user":    username,
+			"age":     age,
 		})
 	})
 
