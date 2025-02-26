@@ -1,7 +1,13 @@
 services:
   fiber-webserver:
+    container_name: fiber
+    networks:
+      - homelab
     build: .
     ports:
       - "13000:13000"
       - "13100:13100"
     restart: unless-stopped
+networks:
+    homelab:
+      external: true

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sync/atomic"
@@ -11,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rivo/tview"
 )
 
 var (
@@ -52,7 +50,7 @@ func main() {
 	go trackMetrics()
 
 	// Start TUI
-	go startTUI()
+	//go startTUI()
 
 	// Initialize Fiber app
 	app := fiber.New()
@@ -61,7 +59,7 @@ func main() {
 	app.Post("/data", func(c *fiber.Ctx) error {
 		var input struct {
 			Username string `json:"username"`
-			Age      int    `json:"age"`
+			Age      string `json:"age"`
 		}
 		if err := json.Unmarshal(c.Body(), &input); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -113,7 +111,7 @@ func trackMetrics() {
 	}
 }
 
-func startTUI() {
+/*func startTUI() {
 	app := tview.NewApplication()
 	textView := tview.NewTextView().
 		SetDynamicColors(true).
@@ -139,4 +137,4 @@ func startTUI() {
 	if err := app.SetRoot(grid, true).Run(); err != nil {
 		log.Fatal(err)
 	}
-}
+}*/
